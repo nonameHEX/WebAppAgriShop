@@ -1,0 +1,58 @@
+{% extends "__main.jinja" %}
+
+{% block content %}
+    <main>
+        <section>
+            <div id="cart_wrapper">
+                {% if products | length == 0 %}
+                    <h1>VÁŠ KOŠÍK JE PRÁZDNÝ</h1>
+                {% else %}
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Vaše položky:</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td>
+                                    {% if product.image %}
+                                        <img src="data:image;base64,{{ product.image }}" alt="obrazek stroje"
+                                             class="machine_offer_img">
+                                    {% else %}
+                                        <img src="../../static/img/kombajn.png" alt="obrazek stroje"
+                                             class="machine_offer_img">
+                                    {% endif %}
+                                </td>
+                                <td>{{ product.name }}</td>
+                                <td>Počet dní: {{ product.days }}</td>
+                                <td>Obsluha: <input type="checkbox" {{ "checked" if product.service == 1 else "" }} class="cart_checkbox"></td>
+                                <td>{{ product.price }} Kč</td>
+                                <td>
+                                    <span><a class="material-icons icon remove_product"
+                                             href="{{ url_for('cart.delete_product',product_index=product.index) }}">delete</a></span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <div id="cart_btn_wrapper">
+                        <a class="text_link" href="{{ url_for('completeOrder.view_complete_order_page') }}"><button class="btn">Pokračovat</button></a>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+{% if session['cart'] %}
+
+    {% block scripts %}
+        <script type="text/javascript">
+            let products = {{ session['cart'] }};
+        </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/cart.js') }}" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    {% endblock %}
+
+{% endif %}

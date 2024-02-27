@@ -1,0 +1,121 @@
+{% extends "__main.jinja" %}
+{% from 'macros/form_field.jinja' import render_field with context %}
+{% block content %}
+    {#    TODO Upravit stránku do výsledné podoby, momentálně jsou jen naimportovaná data z DB, ale není tu zde žádný CSS atd.#}
+    <main>
+        <section>
+            {% for message in get_flashed_messages() %}
+                <h1>
+                    {{ message }}
+                </h1>
+            {% endfor %}
+            <div class="order_detail_HEAD">
+                <div><b>Objednávka: {{ order.id }}</b></div>
+                <div><b>Od:</b> {{ order.date_to_delivery }}</div>
+                <div><b>Do:</b> {{ order.date_to_pickup }}</div>
+                <div><b>Stav:</b> {{ order.order_state_name }}</div>
+            </div>
+            <div><b>Kontaktní udaje uživatel:</b></div>
+            <div class="order_detail_HEAD">
+                <div><b>Jméno:</b> {{ order.user_name }}</div>
+                <div><b>Přijmení:</b> {{ order.user_last_name }}</div>
+                <div><b>Email:</b> {{ order.user_email }}</div>
+                <div><b>Adresa:</b> {{ order.address }}</div>
+                <div>
+                    {% if order.phone_number %}
+                        <b>Telefon:</b> {{ order.phone_number }}
+                    {% endif %}
+                </div>
+            </div>
+            {% for machine in order_machines %}
+                <div class="order_detail_MID">
+                    <div class="order_machine_div">
+                        {% if machine.machine_image %}
+                            <img src="data:image;base64,{{ machine.machine_image }}"
+                                 alt="obrazek stroje" class="order_machine_img">
+                        {% else %}
+                            <img src="../../static/img/img_placeholder.png" alt="obrazek stroje"
+                                 class="order_machine_img">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div><b>Udaje o stroji:</b> {{ machine.machine_name }}</div>
+                        <div><b>Typ:</b> {{ machine.machine_type }} &nbsp;&nbsp; <b>Obsluha:</b> <input
+                                type="checkbox" {{ "checked" if machine.with_service == 1 else "" }}
+                                onclick="return false"></div>
+                        <div><b>Cena stroje za všechny dny:</b> {{ machine.price_per_all_day | int }} Kč</div>
+                        <div class="order_info_block"><b>Info:</b> {{ machine.machine_description }}</div>
+                    </div>
+                </div>
+                {% if machine.with_service == 1 %}
+                    {% if session["role"] != "Technik" %}
+                        <div class="order_detail_MID">
+                            <div>
+                                <div><b>Kontaktní údaje na technika:</b></div>
+                                <div><b>Jméno a
+                                    přijmení:</b> {{ machine.technician_name }} {{ machine.technician_last_name }}
+                                </div>
+                                <div><b>Telefon:</b> {{ machine.technician_phone_number }}</div>
+                            </div>
+                            <div>
+                                {% if (session["role"] == "Správce" or session["role"] == "Dispečer") and order.state == 1 %}
+                                    <div>
+                                        <form method="POST" enctype="multipart/form-data">
+                                            <dl>
+                                                {{ render_field(form.employee_select) }}
+                                            </dl>
+                                            <input class="btn" type="submit" name="assign_technician"
+                                                   value="Přidělit technika">
+                                            <input class="btn" type="submit" name="remove_technician"
+                                                   value="Odebrat technika">
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            <div class="order_detail_FOOT">
+                <div>
+                    <h1>💵 Celková cena: {{ sum_price | int }} Kč 💵</h1>
+                </div>
+                {% if (session["role"] == "Správce" or session["role"] == "Dispečer") and order.state == 1 %}
+                    <div>
+                        <a href="{{ url_for('orders.update_order_state', oid=order.id, st=2) }}">
+                            <button class="btn" style="width: 5em; margin-right: 0.5em">Potvrdit</button>
+                        </a>
+                        <a href="{{ url_for('orders.update_order_state', oid=order.id, st=3) }}">
+                            <button class="btn" style="width: 5em">Zrušit</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{#
+Co je vše fetchnuté z DB:
+    order.
+        main_orders.*,
+        order_state.name AS order_state_name,
+        us.name AS user_name,
+        us.last_name AS user_last_name,
+        us.email AS user_email,
+        us.phone_number AS phone_number
+machine in order_machines
+    machine.
+        order_machine.with_service AS with_service,
+        order_machine.machine_id as machine_id,
+        machines.name AS machine_name,
+        machines.description AS machine_description,
+        machines.image AS machine_image,
+        machine_types.name AS machine_type,
+        tech.name AS technician_name,
+        tech.last_name AS technician_last_name,
+        tech.phone_number AS technician_phone_number,
+        machines.price_per_day * (julianday(main_orders.date_to_pickup) - julianday(main_orders.date_to_delivery)) AS price_per_all_day,
+        salary_for_worker
+#}

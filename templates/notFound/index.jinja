@@ -1,0 +1,14 @@
+{% extends "__main.jinja" %}
+{% block content %}
+    <main>
+        <section>
+            <div class="error-div">
+                <h1>Stránka nenalezena</h1>
+                <div>Omlouváme se, ale hledaná stránka neexistuje.</div>
+                <a href="{{ url_for('machineoffer.view_machine_offer_page') }}">
+                    <button class="btn">Přejít na nabídku strojů</button>
+                </a>
+            </div>
+        </section>
+    </main>
+{% endblock %}

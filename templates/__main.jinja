@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Půjčovna zemědělských strojů</title>
+
+    <!-- Zde budou odkazy na css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/structure.css') }}" type="text/css">
+
+    <!-- Zde budou odkazy na ikony atp.-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+{% block navbar %}
+{% include "__nav.jinja" %}
+{% endblock %}
+
+{% block content %}
+    <!-- Tenhle block je pak potřeba psát v ostatních templatech aby se přepsal content mainu -->
+    <!-- Vždy začít <main> tagem a jednotlivá témata textů atp. oddělovat <section> tagem-->
+{% endblock %}
+
+{% block footer %}
+{% include "__footer.jinja" %}
+{% endblock %}
+
+{% block scripts %}
+    <!-- Tenhle block je pak potřeba psát v ostatních templatech aby se přepsal content mainu -->
+    <!-- Zde vkládat v templatech pouze odkazy na js skripty -->
+    {% if session['cart'] %}
+
+        <script type="text/javascript">
+            let products = {{ session['cart'] }};
+        </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/cart.js') }}" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+{% endif %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,94 @@
+{% extends "__main.jinja" %}
+{% from 'macros/form_field.jinja' import render_field with context %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/machine_offer.css') }}" type="text/css">
+{% endblock %}
+{% block content %}
+    <main>
+        <section>
+        {% for message in get_flashed_messages() %}
+                <h1 class="error_message">
+                    {{ message }}
+                </h1>
+            {% endfor %}
+            <h1>Nabidka strojů</h1>
+            <div class="machine_offer_filter form_wrapper">
+                <h4>Filter</h4>
+                <form method="GET">
+                    <div class="machine_offer_filter_input">
+                        <div>
+                            {{ render_field(form.machineName) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.dateFrom) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.dateTo) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.priceFrom) }}
+                        </div>
+
+                        <div>
+                            {{ render_field(form.priceTo) }}
+                        </div>
+                    </div>
+                    <div class="machine_offer_filter_buttons">
+                        <button class="btn" type="submit">Filtrovat</button>
+                        <a class="text_link"
+                           href="{{ url_for('machineoffer.reset_offer_filter') }}">
+                            <button class="btn" type="button">Vyčistit filter</button>
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+            <div>
+
+                {% if machines | length == 0 %}
+                    <h1> ŽÁDNÉ STROJE NEBYLY NALEZENY</h1>
+                {% else %}
+                    <ul>
+                        {% for machine in machines %}
+                            <li>
+                                {% if machine.image %}
+                                    <img src="data:image;base64,{{ machine.image }}" alt="obrazek stroje"
+                                         class="machine_offer_img">
+                                {% else %}
+                                    <img src="../../static/img/kombajn.png" alt="obrazek stroje"
+                                         class="machine_offer_img">
+                                {% endif %}
+                                <h3>{{ machine.name }}</h3>
+                                <label class="machine_cena">{{ machine.price_per_day }} Kč/Den</label>
+                                <div class="machine_checkbox_div">
+                                    <label for="machine_checkbox_placeholder">s obsluhou:</label>
+                                    <input class="machine_check" type="checkbox">
+                                </div>
+                                <a class="hidden_link"
+                                   href="{{ url_for('cart.add_product_to_cart',machine_id=machine.id) }}"></a>
+                                    <button class="btn add_to_cart">Přidat do košíku</button>
+
+                                <a class="text_link"
+                                   href="{{ url_for('machineoffer.show_machine_detail',machine_id=machine.id) }}">
+                                    <button class="btn">Detail</button>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        <!-- Přidejte další položky podle potřeby -->
+                    </ul>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+{% if session['cart'] %}
+
+    {% block scripts %}
+        <script type="text/javascript">
+            let products = {{ session['cart'] }};
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/cart.js') }}" defer></script>
+    {% endblock %}
+
+{% endif %}

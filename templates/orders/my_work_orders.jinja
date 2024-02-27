@@ -1,0 +1,38 @@
+{% extends "__main.jinja" %}
+{% block content %}
+    <main>
+        <section>
+            <div id="cart_wrapper">
+                {% if work_orders | length == 0 %}
+                    <h1>ŽÁDNÉ ZAKÁZKY</h1>
+                {% else %}
+                    <h1>Zakázky</h1>
+                    <table>
+                    <thead>
+                    <tr>
+                        <th>Od</th>
+                        <th>Do</th>
+                        <th>Stav</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--TESTING DATA-->
+                    {% for order in work_orders %}
+                        <tr>
+                            <td>{{ order.date_to_delivery }}</td>
+                            <td>{{ order.date_to_pickup }}</td>
+                            <td>{{ order.order_state_name }}</td>
+                            <td>
+                                <div>
+                                    <a href="{{ url_for('orders.view_order_details_page', usid=session["uid"],oid=order.id, mid=order.machine_id) }}"><button class="btn">Detaily zakázky</button></a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+{% endblock %}

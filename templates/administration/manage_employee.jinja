@@ -1,0 +1,27 @@
+{% extends "__main.jinja" %}
+{% from 'macros/form_field.jinja' import render_field with context %}
+
+{% block content %}
+    <main>
+        <section>
+            {% for message in get_flashed_messages() %}
+                <h1>
+                    {{ message }}
+                </h1>
+            {% endfor %}
+            <h1>Správa zaměstnanců</h1>
+            <div class="form_wrapper">
+                <form method="POST" enctype="multipart/form-data">
+                    <dl>
+                        {{ render_field(form.userId) }}
+                        {{ render_field(form.username) }}
+                        {{ render_field(form.phone_number) }}
+                        {{ render_field(form.salary) }}
+                        {{ render_field(form.type) }}
+                    </dl>
+                    <input class="btn" type="submit" value="Přidat / Upravit zaměstnance">
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

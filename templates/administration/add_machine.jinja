@@ -1,0 +1,27 @@
+{% extends "__main.jinja" %}
+{% from 'macros/form_field.jinja' import render_field with context %}
+
+{% block content %}
+    <main>
+        <section>
+            {% for message in get_flashed_messages() %}
+                <h1 class="error_message">
+                    {{ message }}
+                </h1>
+            {% endfor %}
+            <h1>Přidat stroj</h1>
+            <div class="form_wrapper">
+                <form method="POST" enctype="multipart/form-data">
+                    <dl>
+                        {{ render_field(form.machineName) }}
+                        {{ render_field(form.price) }}
+                        {{ render_field(form.type) }}
+                        {{ render_field(form.description) }}
+                        {{ render_field(form.image) }}
+                    </dl>
+                    <input class="btn" type="submit" value="Přidat stroj">
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

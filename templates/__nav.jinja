@@ -1,0 +1,39 @@
+<!-- TODO přidat odkazy do href aý bude implementace v app.py -->
+<header>
+    {% if session["auth"] %}
+        <a href="{{ url_for('login.signout') }}">Odhlásit {{ session["username"] }}</a>
+    {% else %}
+        <a href="{{ url_for('login.view_login_page') }}">Přihlásit</a>
+    {% endif %}
+</header>
+<div class="hamburger">
+    <span id="hamburger" class="material-icons">menu</span>
+</div>
+<nav id="nav">
+    <a href="{{ url_for('machineoffer.view_machine_offer_page') }}">Nabídka strojů</a>
+    <a href="{{ url_for('cart.view_cart_page') }}" id="cart">Košík
+    </a>
+    {% if session["auth"] %}
+        {# TODO přidat stránku pro editování profilu #}
+        <a href="{{ url_for('profile.view_profile_page', usid=session['uid']) }}">Profil</a>
+    {% endif %}
+    {% if session["role"] == "Uživatel" %}
+        <a href="{{ url_for('orders.view_orders_page', usid=session['uid']) }}">Moje objednávky</a>
+    {% endif %}
+    {% if session["role"] == "Technik" %}
+        <a href="{{ url_for('workOrders.view_work_orders_page', emid=session['uid']) }}">Moje zakázky</a>
+    {% endif %}
+    {% if session["role"] == "Správce" or session["role"] == "Dispečer" %}
+        <a href="{{ url_for('reservations.view_reservations_page') }}">Rezervace</a>
+    {% endif %}
+    {% if session["role"] == "Správce" %}
+        {# TODO přidat stránku pro přidání zaměstnance #}
+        <a href="{{ url_for('administration.view_manage_employee_page') }}">Správa zaměstnanců</a>
+        {# TODO přidat stránku pro přidání stroje #}
+        <a href="{{ url_for('administration.view_add_machine_page') }}">Přidat stroje</a>
+    {% endif %}
+</nav>
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/nav_js.js') }}"></script>
+{% endblock %}

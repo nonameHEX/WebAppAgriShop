@@ -1,0 +1,193 @@
+ ul {
+     list-style: none;
+     padding: 0;
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-around;
+    }
+
+    li {
+      box-sizing: border-box;
+      margin: 5px;
+      padding: 10px;
+      border: 2px solid #ccc;
+        border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+        min-width: 18.1em;
+    }
+
+    li h3{
+        margin-top: 4%;
+        margin-bottom: 5%;
+    }
+    li .hidden_link{
+        display: none;
+    }
+    li .add_to_cart{
+        margin-bottom: 1em;
+    }
+    .machine_cena{
+        font-weight: bold;
+        margin-bottom: 2%;
+    }
+
+    .machine_checkbox_placeholder {
+
+    }
+
+    .machine_checkbox_div {
+        margin-bottom: 2%;
+    }
+
+    @media (min-width: 768px) {
+        li {
+            width: 30%;
+        }
+    }
+
+    @media (max-width: 600px) {
+      li {
+        display: block;
+        width: 100%;
+      }
+    }
+
+ .machine_offer_img {
+     width: auto;
+     height: 150px;
+     object-fit: cover;
+
+ }
+
+ .machine_offer_filter {
+    width: 91%;
+    background: #78bc1b;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.machine_offer_filter h4 {
+    color: white;
+    text-align: center;
+}
+
+.machine_offer_filter_input {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+
+.machine_offer_filter_input input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 150px;
+}
+
+.machine_offer_filter_input div {
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.machine_offer_filter_input label {
+    display: block;
+    margin-bottom: 5px;
+
+}
+
+.machine_offer_filter_buttons {
+    text-align: center;
+}
+
+.machine_offer_filter_buttons button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.machine_offer_filter_buttons .text_link{
+    display: inline-block;
+}
+
+.machine_offer_filter_buttons button:hover {
+    background-color: #45a049;
+}
+
+/*MACHINE DETAIL*/
+ .detail_wrapper{
+     display: flex;
+     flex-direction: row;
+     align-items: flex-start;
+ }
+ .machine_name{
+     color: #78bc1b;
+     margin-bottom: 1em;
+ }
+ .detail_left{
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     width: 50%;
+     margin-right: 4em;
+ }
+ .detail_left img{
+     /*width: 100%;*/
+         width: max-content;
+         max-width: 100%;
+     height: auto;
+     /*prevent big images*/
+     max-height: 50vh;
+     /*object-fit: scale-down;*/
+ }
+ .detail_right{
+     display: flex;
+     flex-direction: column;
+     width: 50%;
+ }
+ .detail_right form{
+     margin-top: 2em;
+ }
+ .detail_right .btn{
+     margin-top: 2%;
+     display: block;
+ }
+ .detail_right .machine_checkbox_div{
+     margin-top: 1em;
+ }
+
+/* Media query pro responsivitu na malých obrazovkách */
+@media screen and (max-width: 600px) {
+    .machine_offer_filter_input {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .machine_offer_filter_input input {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .detail_wrapper{
+        flex-direction: column;
+        align-items: center;
+    }
+    .detail_left{
+        margin-right: 0em;
+        margin-bottom: 2em;
+        width: auto;
+    }
+    .detail_right{
+        align-items: center;
+        width: 90%;
+        text-align: center;
+    }
+}
+
+

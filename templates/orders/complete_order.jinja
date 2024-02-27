@@ -1,0 +1,24 @@
+<!--EXTEND LOGIN PAGE TO HIDE NAVBAR AND FOOTER-->
+{% extends "login/login.jinja" %}
+{% from 'macros/form_field.jinja' import render_field with context %}
+
+{% block content %}
+    <main>
+        <section>
+            <h1>Dokončení objednávky</h1>
+            <div class="form_wrapper">
+                <form method="POST">
+                        {{ render_field(form.name) }}
+                        {{ render_field(form.last_name) }}
+                        {{ render_field(form.phone_number) }}
+                        {{ render_field(form.email) }}
+                        {{ render_field(form.city) }}
+                        {{ render_field(form.street) }}
+                        {{ render_field(form.descriptive_number) }}
+                        {{ render_field(form.zip_code) }}
+                    <input class="btn" type="submit" value="Dokončit objednávku">
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

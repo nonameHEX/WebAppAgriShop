@@ -1,0 +1,42 @@
+{% extends "__main.jinja" %}
+{% block content %}
+    <main>
+        <section>
+            <div id="cart_wrapper">
+                {% if reservations | length == 0 %}
+                    <h1> ŽÁDNÉ REZERVACE</h1>
+                {% else %}
+                    <h1>Rezervace</h1>
+                    <table>
+                    <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Číslo objednávky</th>
+                        <th>Jméno zákazníka</th>
+                        <th>Přijmení zákazníka</th>
+                        <th>Stav</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--TESTING DATA-->
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.date_to_delivery }}</td>
+                            <td>{{ reservation.id }}</td>
+                            <td>{{ reservation.user_name }}</td>
+                            <td>{{ reservation.user_last_name }}</td>
+                            <td>{{ reservation.order_state_name }}</td>
+                            <td>
+                                <div>
+                                    <a href="{{ url_for('orders.view_order_details_page', usid=session["uid"],oid=reservation.id) }}"><button class="btn">Detaily rezervace</button></a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "__main.jinja" %}
+{% from 'macros/form_field.jinja' import render_field with context %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/machine_offer.css') }}" type="text/css">
+{% endblock %}
+{% block content %}
+    <main>
+        <section>
+            {% for message in get_flashed_messages() %}
+                <h1 class="error_message">
+                    {{ message }}
+                </h1>
+            {% endfor %}
+            <div class="detail_wrapper">
+                {% for m in machine %}
+                    <div class="detail_left">
+                        {% if m.image %}
+                            <img src="data:image;base64,{{ m.image }}" alt="obrazek stroje" class="machine_offer_img">
+                        {% else %}
+                            <img src="../../static/img/kombajn.png" alt="obrazek stroje"
+                                 class="machine_offer_img">
+                        {% endif %}
+                    </div>
+                    <div class="detail_right">
+                        <div class="machine_name">
+                            <h3>{{ m.name }}</h3>
+                        </div>
+                        {% if m.description %}
+                            <p>{{ m.description }}</p>
+                        {% else %}
+                            <p>Žádný popis není bohužel k dispozici</p>
+                        {% endif %}
+                        <form method="GET">
+                            <div class="machine_offer_filter_input">
+                                <div>
+                                    {{ render_field(form.dateFrom) }}
+                                </div>
+                                <div>
+                                    {{ render_field(form.dateTo) }}
+                                </div>
+                            </div>
+
+                            <div class="machine_checkbox_div">
+                                <label for="machine_checkbox_placeholder">S obsluhou:</label>
+                                <input id="machine_check" name="machine_check" type="checkbox" {{ "checked" if session['withService'] == "true" else "" }}>
+                            </div>
+                            <label class="machine_cena">{{ m.price_per_day }} Kč/Den</label>
+                            <button class="btn" type="button">Přidat do košíku</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+{% if session['cart'] %}
+
+    {% block scripts %}
+        <script type="text/javascript">
+            let products = {{ session['cart'] }};
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/cart.js') }}" defer></script>
+    {% endblock %}
+
+{% endif %}

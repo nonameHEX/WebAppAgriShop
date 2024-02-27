@@ -1,0 +1,35 @@
+{% extends "__main.jinja" %}
+{% from 'macros/form_field.jinja' import render_field with context %}
+
+<!--HIDE NAVBAR-->
+{% block navbar %}
+    <header class="logreg"></header>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section>
+            {% for message in get_flashed_messages() %}
+                <h1 class="error_message">
+                    {{ message }}
+                </h1>
+            {% endfor %}
+            <div class="form_wrapper" id="login_wrapper">
+                <img src="{{ url_for('static', filename='img/logo.png') }}">
+                <form method="post">
+                    <dl>
+                        {{ render_field(form.username) }}
+                        {{ render_field(form.password) }}
+                    </dl>
+                    <input class="btn" type="submit" value="Přihlásit se">
+                </form>
+                <a href="{{ url_for('register.view_register_page') }}">Nemám účet :(</a>
+                <span><a class="material-icons icon" href="{{ url_for('machineoffer.view_machine_offer_page') }}">home</a></span>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+<!--HIDE FOOTER-->
+{% block footer %}
+{% endblock %}
